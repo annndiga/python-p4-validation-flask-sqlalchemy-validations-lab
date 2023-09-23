@@ -15,5 +15,23 @@ db.init_app(app)
 def index():
     return 'Validations lab'
 
+@validates('phone_number')
+def validate_phone_number(self, key, value):
+    if value is not None and len(value) != 10:
+        raise ValueError('Phone number must be exactly ten digits.')
+    return value
+
+@validates('content')
+def validate_content_length(self, key, value):
+    if len(value) < 250:
+        raise ValueError('Post content must be at least 250 characters long.')
+    return value
+
+@validates('summary')
+def validate_summary_length(self, key, value):
+    if len(value) > 250:
+        raise ValueError('Post summary cannot be longer than 250 characters.')
+    return value
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
